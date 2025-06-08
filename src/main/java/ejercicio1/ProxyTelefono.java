@@ -1,8 +1,10 @@
 package ejercicio1;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Set;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.*;
 import java.util.function.IntFunction;
 
 public class ProxyTelefono implements Set<Telefono> {
@@ -10,13 +12,6 @@ public class ProxyTelefono implements Set<Telefono> {
 
     public ProxyTelefono(int idPersona) {
         this.idPersona = idPersona;
-    }
-
-
-    @Override
-    public <T> T[] toArray(T[] a) {
-        var telefonoDAO = new TelefonoDAO();
-        return telefonoDAO.telefonosPorId(idPersona).toArray(a);
     }
 
 
@@ -36,7 +31,7 @@ public class ProxyTelefono implements Set<Telefono> {
     }
 
     @Override
-    public Iterator<E> iterator() {
+    public Iterator<Telefono> iterator() {
         return null;
     }
 
@@ -45,9 +40,28 @@ public class ProxyTelefono implements Set<Telefono> {
         return new Object[0];
     }
 
+    @Override
+    public <T> T[] toArray(T[] a) {
+        String sql = "select t.numero from telefonos t where t.persona_id=?";
+        List<Telefono> telefonos = new ArrayList<>();
+        try (Connection conn = ConnectionManager.getConnection();
+             PreparedStatement statement =
+                     conn.prepareStatement(sql);) {
+            statement.setInt(1, this.idPersona);
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                telefonos.add(
+                        new Telefono(result.getString(1))
+                );
+            }
+            return telefonos.toArray(a);
+        } catch(SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     @Override
-    public boolean add(E telefono) {
+    public boolean add(Telefono telefono) {
         return false;
     }
 
@@ -62,7 +76,7 @@ public class ProxyTelefono implements Set<Telefono> {
     }
 
     @Override
-    public boolean addAll(Collection<? extends E> c) {
+    public boolean addAll(Collection<? extends Telefono> c) {
         return false;
     }
 
