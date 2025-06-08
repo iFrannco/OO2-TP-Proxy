@@ -4,13 +4,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashSet;
-import java.util.Set;
 
 public class PersonaDAO {
     private Connection obtenerConexion() {
         return ConnectionManager.getConnection();
     }
+
     public Persona personaPorId(int id) {
         String sql = "select p.nombre from personas p where p.id=?";
         try (Connection conn = obtenerConexion();
@@ -23,7 +22,7 @@ public class PersonaDAO {
                 nombrePersona = result.getString(1);
             }
             return new Persona(id, nombrePersona, new ProxyTelefono(id));
-        } catch(SQLException e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }

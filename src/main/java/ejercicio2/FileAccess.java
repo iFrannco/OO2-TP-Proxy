@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-public class FileAccess implements File{
+public class FileAccess implements File {
     private String ruta;
     private String nombreArchivo;
 
@@ -12,8 +12,13 @@ public class FileAccess implements File{
         this.ruta = ruta;
         this.nombreArchivo = nombre;
     }
-    public String readFile() throws IOException {
-        return Files.readString(Paths.get(this.ruta + "/" + this.nombreArchivo));
+
+    public String readFile() {
+        try {
+            return Files.readString(Paths.get(this.ruta + "/" + this.nombreArchivo));
+        } catch (IOException e) {
+            throw new RuntimeException("Error al intentar leer el archivo", e);
+        }
 
     }
 

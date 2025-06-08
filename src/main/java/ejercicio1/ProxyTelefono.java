@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
-import java.util.function.IntFunction;
 
 public class ProxyTelefono implements Set<Telefono> {
     private int idPersona;
@@ -55,7 +54,7 @@ public class ProxyTelefono implements Set<Telefono> {
                 );
             }
             return telefonos.toArray(a);
-        } catch(SQLException e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
