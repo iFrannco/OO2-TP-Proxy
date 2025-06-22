@@ -9,7 +9,6 @@ public class PersonaDAO {
     private Connection obtenerConexion() {
         return ConnectionManager.getConnection();
     }
-
     public Persona personaPorId(int id) {
         String sql = "select p.nombre from personas p where p.id=?";
         try (Connection conn = obtenerConexion();

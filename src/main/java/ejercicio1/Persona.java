@@ -6,6 +6,7 @@ public class Persona {
     private int id;
     private String nombre;
     private Set<Telefono> telefonos;
+
     public Persona(int id, String nombre, Set<Telefono> telefonos) {
         this.id = id;
         this.nombre = nombre;
@@ -13,8 +14,9 @@ public class Persona {
     }
 
     public Telefono[] telefonos() {
-        return telefonos.toArray(new Telefono[0]);
+        return telefonos.toArray(new Telefono[telefonos.size()]);
     }
+
     public String nombre() {
         return nombre;
     }
